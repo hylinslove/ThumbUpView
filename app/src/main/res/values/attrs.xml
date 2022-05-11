@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ThumbUpView">
+
+        <attr name="animate_duration" format="integer"/>
+        <attr name="show_duration" format="integer"/>
+
+    </declare-styleable>
+
+</resources>
