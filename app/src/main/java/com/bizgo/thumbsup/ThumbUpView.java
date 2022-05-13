@@ -40,6 +40,8 @@ public class ThumbUpView extends FrameLayout {
     private Random mRandom = new Random();
     //动画图片资源
     private final List<Integer> imageResList = new ArrayList<>();
+    //正在进行中的动画
+    private List<AnimatorSet> animatorSets = new ArrayList<>();
 
 
     public ThumbUpView(@NonNull Context context) {
@@ -253,12 +255,14 @@ public class ThumbUpView extends FrameLayout {
         protected AnimationEndListener(View child, AnimatorSet animatorSet) {
             this.child = child;
             this.animatorSet = animatorSet;
+            animatorSets.add(animatorSet);
         }
 
         @Override
         public void onAnimationEnd(Animator animation) {
             super.onAnimationEnd(animation);
             removeView(child);
+            animatorSets.remove(this.animatorSet);
             child = null;
         }
     }
@@ -272,5 +276,13 @@ public class ThumbUpView extends FrameLayout {
 
     private void destroy() {
         this.removeAllViews();
+        if (animatorSets != null) {
+            for (AnimatorSet animatorSet : animatorSets) {
+                animatorSet.getListeners().clear();
+                animatorSet.cancel();
+            }
+            animatorSets.clear();
+            animatorSets = null;
+        }
     }
 }
